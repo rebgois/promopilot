@@ -1,35 +1,36 @@
 
 import { alpha, createTheme } from "@mui/material/styles";
 
-const primary = "#5B21D8";
+const primary = "#6045E8";
 
 export const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
       main: primary,
-      light: "#8B5CF6",
-      dark: "#4C1D95",
+      light: "#8B78F5",
+      dark: "#4931C4",
     },
     background: {
-      default: "#F8F7FF",
+      default: "#F8F9FC",
       paper: "#FFFFFF",
     },
     text: {
-      primary: "#17132B",
-      secondary: "#69647E",
+      primary: "#20243A",
+      secondary: "#647084",
     },
     success: {
       main: "#15803D",
     },
     warning: {
-      main: "#D97706",
+      main: "#B45309",
     },
     error: {
       main: "#DC2626",
     },
-    divider: "#EAE7F3",
+    divider: "#E6E8EF",
   },
+
   typography: {
     fontFamily: '"Inter", "Roboto", sans-serif',
     h4: {
@@ -45,28 +46,41 @@ export const theme = createTheme({
       fontWeight: 600,
     },
   },
+
   shape: {
-    borderRadius: 16,
+    borderRadius: 14,
   },
+
   components: {
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          minHeight: "100%",
+          backgroundColor: "#F8F9FC",
+        },
         body: {
-          backgroundColor: "#F8F7FF",
+          minHeight: "100vh",
+          margin: 0,
+          backgroundColor: "#F8F9FC",
+        },
+        "#root": {
+          minHeight: "100vh",
         },
       },
     },
+
     MuiPaper: {
       styleOverrides: {
         root: {
           backgroundImage: "none",
         },
         outlined: {
-          borderColor: "#EAE7F3",
+          borderColor: "#E6E8EF",
           borderRadius: 20,
         },
       },
     },
+
     MuiCard: {
       styleOverrides: {
         root: {
@@ -74,15 +88,17 @@ export const theme = createTheme({
         },
       },
     },
+
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 12,
           paddingInline: 18,
+          minHeight: 40,
           boxShadow: "none",
         },
         outlined: {
-          borderColor: alpha(primary, 0.3),
+          borderColor: "#D8DCE7",
           "&:hover": {
             borderColor: primary,
             backgroundColor: alpha(primary, 0.04),
@@ -90,20 +106,22 @@ export const theme = createTheme({
         },
       },
     },
+
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
           borderRadius: 12,
           backgroundColor: "#FFFFFF",
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#E1DDED",
+            borderColor: "#DDE1EA",
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#A78BFA",
+            borderColor: "#A99CF5",
           },
         },
       },
     },
+
     MuiChip: {
       styleOverrides: {
         root: {
@@ -112,27 +130,30 @@ export const theme = createTheme({
         },
       },
     },
+
     MuiTableHead: {
       styleOverrides: {
         root: {
-          backgroundColor: "#F3EFFF",
+          backgroundColor: "#F8F9FC",
         },
       },
     },
+
     MuiTableCell: {
       styleOverrides: {
         head: {
-          color: "#30265A",
+          color: "#475569",
           fontWeight: 700,
-          borderBottom: "1px solid #EAE7F3",
+          borderBottom: "1px solid #E6E8EF",
         },
       },
     },
+
     MuiTableRow: {
       styleOverrides: {
         root: {
           "&.MuiTableRow-hover:hover": {
-            backgroundColor: "#F5F1FF",
+            backgroundColor: "#F5F6FA",
           },
         },
       },

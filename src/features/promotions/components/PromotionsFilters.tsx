@@ -34,10 +34,10 @@ export function PromotionsFilters({
 
   return (
     <Stack
-      direction={{ xs: "column", md: "row" }}
-      spacing={2}
       component="section"
       aria-label="Filtros de produtos"
+      direction={{ xs: "column", md: "row" }}
+      spacing={2}
       sx={{
         alignItems: {
           xs: "stretch",
@@ -63,12 +63,18 @@ export function PromotionsFilters({
               <InputAdornment position="start">
                 <SearchIcon
                   aria-hidden="true"
+                  sx={{ color: "text.secondary" }}
                 />
               </InputAdornment>
             ),
           },
         }}
-        sx={{ flex: 1 }}
+        sx={{
+          flex: 1,
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "12px",
+          },
+        }}
       />
 
       <TextField
@@ -81,14 +87,11 @@ export function PromotionsFilters({
             event.target.value as StatusFilter,
           )
         }
-        slotProps={{
-          select: {
-            "aria-label":
-              "Filtrar produtos por classificação",
-          },
-        }}
         sx={{
-          minWidth: { md: 180 },
+          minWidth: { md: 190 },
+          "& .MuiOutlinedInput-root": {
+            borderRadius: "12px",
+          },
         }}
       >
         <MenuItem value="all">
@@ -114,6 +117,11 @@ export function PromotionsFilters({
         sx={{
           minHeight: 40,
           whiteSpace: "nowrap",
+          borderRadius: "12px",
+          "&.Mui-disabled": {
+            borderColor: "divider",
+            color: "text.disabled",
+          },
         }}
       >
         Limpar filtros
