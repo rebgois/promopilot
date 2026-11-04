@@ -13,7 +13,10 @@ import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 
 import products from "../data/products.json";
 import { analyzePromotions } from "../domain/analyzePromotions";
+import { formatPercentage } from "../utils/formatters";
+
 import { MetricCard } from "./MetricCard";
+import { PromotionsTable } from "./PromotionsTable";
 
 const analysis = analyzePromotions(products);
 
@@ -23,17 +26,21 @@ export function Dashboard() {
   const averageMargin =
     summary.averageMargin === null
       ? "—"
-      : `${summary.averageMargin.toFixed(2)}%`;
+      : formatPercentage(summary.averageMargin);
 
   return (
     <Stack spacing={4}>
+      {/* Cabeçalho do dashboard */}
       <Box>
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
           sx={{
             justifyContent: "space-between",
-            alignItems: { xs: "flex-start", sm: "center" },
+            alignItems: {
+              xs: "flex-start",
+              sm: "center",
+            },
           }}
         >
           <Box>
@@ -55,6 +62,7 @@ export function Dashboard() {
         </Stack>
       </Box>
 
+      {/* Indicadores comerciais */}
       <Box
         sx={{
           display: "grid",
@@ -94,6 +102,9 @@ export function Dashboard() {
           icon={<ErrorOutlineOutlinedIcon color="error" />}
         />
       </Box>
+
+      {/* Tabela de produtos analisados */}
+      <PromotionsTable products={analysis.products} />
     </Stack>
   );
 }
