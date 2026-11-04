@@ -4,12 +4,11 @@ import {
   Box,
   Chip,
   Container,
-  Paper,
   Stack,
   Toolbar,
   Typography,
 } from "@mui/material";
-
+import { Dashboard } from "../features/promotions/components/Dashboard";
 import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 
 export function App() {
@@ -39,40 +38,9 @@ export function App() {
 
       <Container maxWidth="lg" sx={{ py: 5 }}>
         <Stack spacing={3}>
-          <Box>
-            <Typography variant="h4" gutterBottom>
-              Inteligência de Promoções
-            </Typography>
-
-            <Typography color="text.secondary">
-              Analise margens, identifique riscos e tome
-              decisões comerciais com mais segurança.
-            </Typography>
-          </Box>
-
-          <Paper
-            variant="outlined"
-            sx={{
-              p: 4,
-              minHeight: 280,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            <Stack spacing={1}>
-              <Typography variant="h6">
-                Análise de promoções
-              </Typography>
-
-              <Typography color="text.secondary">
-                Os indicadores comerciais serão
-                apresentados aqui.
-              </Typography>
+          <Dashboard />
+          
             </Stack>
-          </Paper>
-        </Stack>
       </Container>
     </Box>
   );
