@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-     "test": "vitest run"
+    "test": "vitest run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,6 +16,7 @@
     "@mui/icons-material": "^9.5.0",
     "@mui/material": "^9.5.0",
     "react": "^19.3.1",
+    "react-chatbotify": "^2.5.0",
     "react-dom": "^19.3.1",
     "zod": "^4.6.7"
   },

@@ -1,4 +1,4 @@
-
+import { lazy, Suspense } from "react";
 import {
   Box,
   Chip,
@@ -22,6 +22,12 @@ import { useMemo, useState } from "react";
 import type { StatusFilter } from "./PromotionsFIlters";
 
 const analysis = analyzePromotions(products);
+
+const AssistantChat = lazy(
+  () => import("../../assistant/components/AssistantChat").then(
+    (module) => ({ default: module.AssistantChat }),
+  ),
+);
 
 export function Dashboard() {
   const { summary } = analysis;
@@ -54,7 +60,6 @@ function clearFilters() {
   setSearch("");
   setStatus("all");
 }
-
 
   return (
     <Stack spacing={4}>
@@ -142,6 +147,9 @@ function clearFilters() {
   onClearFilters={clearFilters}
 />
 <InvalidPromotions products={analysis.invalidProducts} />
+<Suspense fallback={null}>
+  <AssistantChat />
+</Suspense>
     </Stack>
   );
 }
