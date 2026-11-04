@@ -64,20 +64,24 @@ export function MetricCard({
   const colors = toneStyles[tone];
 
   return (
-    <Card
-      variant="outlined"
-      sx={{
-        height: "100%",
-        backgroundColor: colors.background,
-        borderColor: colors.border,
-        boxShadow: "0 6px 20px rgba(45, 30, 90, 0.04)",
-        transition: "transform 180ms ease, box-shadow 180ms ease",
-        "&:hover": {
-          transform: "translateY(-3px)",
-          boxShadow: "0 12px 28px rgba(45, 30, 90, 0.09)",
-        },
-      }}
-    >
+
+<Card
+  variant="outlined"
+  sx={{
+    height: "100%",
+    borderRadius: "20px !important",
+    backgroundColor: `${colors.background} !important`,
+    border: `1px solid ${colors.border}`,
+    boxShadow: "0 6px 20px rgba(45, 30, 90, 0.05)",
+    overflow: "hidden",
+    transition: "transform 180ms ease, box-shadow 180ms ease",
+    "&:hover": {
+      transform: "translateY(-3px)",
+      boxShadow: "0 12px 28px rgba(45, 30, 90, 0.09)",
+    },
+  }}
+>
+
       <CardContent sx={{ p: 2.5, "&:last-child": { pb: 2.5 } }}>
         <Stack spacing={2}>
           <Stack

@@ -30,7 +30,14 @@ export function InvalidPromotions({
   }
 
   return (
-    <Paper variant="outlined">
+    <Paper 
+sx={{
+  borderRadius: "20px",
+  borderColor: "#EAE7F3",
+  boxShadow: "0 8px 32px rgba(45, 30, 90, 0.05)",
+  overflow: "hidden",
+}}
+variant="outlined">
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack
           direction={{ xs: "column", sm: "row" }}
