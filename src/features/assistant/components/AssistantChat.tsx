@@ -1,6 +1,6 @@
 
 import ChatBot, { type Flow } from "react-chatbotify";
-import { usePromotionFiltersStore } from "../../promotions/store/usePromotionFiltersStore";
+import { usePromotionFiltersStore } from "../../promotions/store/src/features/promotions/store/usePromotionFiltersStore";
 import products from "../../promotions/data/products.json";
 import { analyzePromotions } from "../../promotions/domain/analyzePromotions";
 import { processAssistantMessage } from "../domain/processAssistantMessage";
