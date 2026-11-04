@@ -56,7 +56,15 @@ export function PromotionsTable({
       : `${products.length} produtos encontrados.`;
 
   return (
-    <Paper variant="outlined" sx={{ overflow: "hidden" }}>
+    <Paper
+  variant="outlined"
+  sx={{
+    overflow: "hidden",
+    borderRadius: "22px",
+    borderColor: "#EAE7F3",
+    boxShadow: "0 8px 32px rgba(45, 30, 90, 0.06)",
+  }}
+>
       <Box sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={3}>
           <Box>
@@ -156,6 +164,12 @@ export function PromotionsTable({
                 minWidth: 900,
                 "& .MuiTableCell-root": {
                   py: 2,
+                },
+                "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even)": {
+                  backgroundColor: "#FAF8FF",
+                },
+                "& .MuiTableBody-root .MuiTableRow-root:hover": {
+                  backgroundColor: "#F3EFFF",
                 },
               }}
             >

@@ -12,11 +12,10 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-
+import { usePromotionFiltersStore } from "../store/src/features/promotions/store/usePromotionFiltersStore";
 import products from "../data/products.json";
 import { analyzePromotions } from "../domain/analyzePromotions";
 import { formatPercentage } from "../utils/formatters";
-import { usePromotionFiltersStore } from "../store/usePromotionFiltersStore";
 
 import { MetricCard } from "./MetricCard";
 import { PromotionsTable } from "./PromotionsTable";
