@@ -1,5 +1,6 @@
 
 import ChatBot, { type Flow } from "react-chatbotify";
+
 import { usePromotionFiltersStore } from "../../promotions/store/src/features/promotions/store/usePromotionFiltersStore";
 import products from "../../promotions/data/products.json";
 import { analyzePromotions } from "../../promotions/domain/analyzePromotions";
@@ -7,70 +8,11 @@ import { processAssistantMessage } from "../domain/processAssistantMessage";
 
 const analysis = analyzePromotions(products);
 
-const flow: Flow = {
-
-start: {
-  message:
-    "Olá! Sou o assistente comercial do PromoPilot. " +
-    "Escolha uma sugestão ou digite sua pergunta.",
-
-  options: {
-    items: [
-      "Me dê um resumo",
-      "Quais produtos estão em prejuízo?",
-      "Quais produtos têm margem baixa?",
-      "Quais produtos são saudáveis?",
-    ],
-    reusable: false,
-    sendOutput: true,
-  },
-
-  path: "conversation",
-},
-
-conversation: {
-  message: (params) => respondToMessage(params.userInput),
-  path: "conversation",
-},
-};
-
-export function AssistantChat() {
-  return (
-    <ChatBot
-      id="promopilot-assistant"
-      flow={flow}
-      settings={{
-        tooltip: {
-          text: "Fale comigo! 👋",
-        },
-        general: {
-          primaryColor: "#1976d2",
-          secondaryColor: "#4338ca",
-        },
-        header: {
-          title: "Assistente PromoPilot",
-        },
-        chatInput: {
-          enabledPlaceholderText:
-            "Pergunte sobre suas promoções...",
-        },
-        notification: {
-          disabled: true,
-        },
-      }}
-      styles={{
-        botBubbleStyle: {
-          backgroundColor: "#eef2ff",
-          color: "#1e293b",
-        },
-        userBubbleStyle: {
-          backgroundColor: "#1976d2",
-          color: "#ffffff",
-        },
-      }}
-    />
-  );
-}
+const suggestedQuestions = [
+  "Me dê um resumo",
+  "Quais produtos estão em prejuízo?",
+  "Quais produtos têm margem baixa?",
+];
 
 function respondToMessage(userInput: string): string {
   const response = processAssistantMessage(
@@ -94,4 +36,71 @@ function respondToMessage(userInput: string): string {
   }
 
   return response.message;
+}
+
+const flow: Flow = {
+  start: {
+    message:
+      "Olá! Sou o assistente comercial do PromoPilot. " +
+      "Escolha uma sugestão ou digite sua pergunta.",
+
+    options: {
+      items: suggestedQuestions,
+      reusable: true,
+      sendOutput: true,
+    },
+
+    path: "conversation",
+  },
+
+  conversation: {
+    message: (params) =>
+      respondToMessage(params.userInput),
+
+    options: {
+      items: suggestedQuestions,
+      reusable: true,
+      sendOutput: true,
+    },
+
+    path: "conversation",
+  },
+};
+
+export function AssistantChat() {
+  return (
+    <ChatBot
+      id="promopilot-assistant"
+      flow={flow}
+      settings={{
+        tooltip: {
+          text: "Fale comigo! 👋",
+        },
+        general: {
+          primaryColor: "#6045E8",
+          secondaryColor: "#4931C4",
+        },
+        header: {
+          title: "Assistente PromoPilot",
+        },
+        chatInput: {
+          enabledPlaceholderText:
+            "Pergunte sobre suas promoções...",
+        },
+        notification: {
+          disabled: true,
+        },
+      }}
+      styles={{
+        botBubbleStyle: {
+          backgroundColor: "#F0EDFF",
+          color: "#20243A",
+        },
+        userBubbleStyle: {
+          backgroundColor: "#6045E8",
+          color: "#FFFFFF",
+        },
+      }}
+    />
+  );
 }
