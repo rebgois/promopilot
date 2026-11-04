@@ -10,7 +10,7 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-
+import { InvalidPromotions } from "./InvalidPromotions";
 import products from "../data/products.json";
 import { analyzePromotions } from "../domain/analyzePromotions";
 import { formatPercentage } from "../utils/formatters";
@@ -141,6 +141,7 @@ function clearFilters() {
   onStatusChange={setStatus}
   onClearFilters={clearFilters}
 />
+<InvalidPromotions products={analysis.invalidProducts} />
     </Stack>
   );
 }
