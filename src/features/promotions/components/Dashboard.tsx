@@ -17,6 +17,9 @@ import { formatPercentage } from "../utils/formatters";
 
 import { MetricCard } from "./MetricCard";
 import { PromotionsTable } from "./PromotionsTable";
+import { useMemo, useState } from "react";
+
+import type { StatusFilter } from "./PromotionsFIlters";
 
 const analysis = analyzePromotions(products);
 
@@ -27,6 +30,31 @@ export function Dashboard() {
     summary.averageMargin === null
       ? "—"
       : formatPercentage(summary.averageMargin);
+
+
+const [search, setSearch] = useState("");
+const [status, setStatus] = useState<StatusFilter>("all");
+
+const filteredProducts = useMemo(() => {
+  const normalizedSearch = search.trim().toLocaleLowerCase("pt-BR");
+
+  return analysis.products.filter((product) => {
+    const matchesSearch =
+      product.nome.toLocaleLowerCase("pt-BR").includes(normalizedSearch) ||
+      product.sku.toLocaleLowerCase("pt-BR").includes(normalizedSearch);
+
+    const matchesStatus =
+      status === "all" || product.status === status;
+
+    return matchesSearch && matchesStatus;
+  });
+}, [search, status]);
+
+function clearFilters() {
+  setSearch("");
+  setStatus("all");
+}
+
 
   return (
     <Stack spacing={4}>
@@ -104,7 +132,15 @@ export function Dashboard() {
       </Box>
 
       {/* Tabela de produtos analisados */}
-      <PromotionsTable products={analysis.products} />
+      
+<PromotionsTable
+  products={filteredProducts}
+  search={search}
+  status={status}
+  onSearchChange={setSearch}
+  onStatusChange={setStatus}
+  onClearFilters={clearFilters}
+/>
     </Stack>
   );
 }

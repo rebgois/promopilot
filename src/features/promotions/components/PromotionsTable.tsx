@@ -2,6 +2,7 @@
 import {
   Box,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -17,26 +18,53 @@ import {
   formatPercentage,
 } from "../utils/formatters";
 
+import { PromotionsFilters } from "./PromotionsFIlters";
+import type { StatusFilter } from "./PromotionsFIlters";
+
 import { PromotionStatusChip } from "./PromotionStatusChip";
 
 interface PromotionsTableProps {
   products: AnalyzedPromotion[];
+  search: string;
+  status: StatusFilter;
+  onSearchChange: (value: string) => void;
+  onStatusChange: (value: StatusFilter) => void;
+  onClearFilters: () => void;
 }
 
 export function PromotionsTable({
   products,
+  search,
+  status,
+  onSearchChange,
+  onStatusChange,
+  onClearFilters,
 }: PromotionsTableProps) {
   return (
     <Paper variant="outlined">
-      <Box sx={{ p: 3 }}>
-        <Typography variant="h6">
-          Produtos analisados
-        </Typography>
 
-        <Typography variant="body2" color="text.secondary">
-          Detalhamento das promoções e suas margens.
-        </Typography>
-      </Box>
+<Box sx={{ p: 3 }}>
+  <Stack spacing={3}>
+    <Box>
+      <Typography variant="h6">
+        Produtos analisados
+      </Typography>
+
+      <Typography variant="body2" color="text.secondary">
+        {products.length} produto(s) encontrado(s).
+      </Typography>
+    </Box>
+
+    <PromotionsFilters
+      search={search}
+      status={status}
+      onSearchChange={onSearchChange}
+      onStatusChange={onStatusChange}
+      onClear={onClearFilters}
+    />
+  </Stack>
+</Box>
+
 
       <TableContainer>
         <Table sx={{ minWidth: 900 }}>
