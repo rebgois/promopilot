@@ -29,25 +29,41 @@ export function PromotionsFilters({
   onStatusChange,
   onClear,
 }: PromotionsFiltersProps) {
-  const hasActiveFilters = search !== "" || status !== "all";
+  const hasActiveFilters =
+    search.trim() !== "" || status !== "all";
 
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
       spacing={2}
-      sx={{ alignItems: { xs: "stretch", md: "center" } }}
+      component="section"
+      aria-label="Filtros de produtos"
+      sx={{
+        alignItems: {
+          xs: "stretch",
+          md: "center",
+        },
+      }}
     >
       <TextField
         label="Buscar produtos"
         placeholder="Nome ou SKU"
         size="small"
         value={search}
-        onChange={(event) => onSearchChange(event.target.value)}
+        onChange={(event) =>
+          onSearchChange(event.target.value)
+        }
         slotProps={{
+          htmlInput: {
+            "aria-label":
+              "Buscar produtos por nome ou SKU",
+          },
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <SearchIcon
+                  aria-hidden="true"
+                />
               </InputAdornment>
             ),
           },
@@ -61,14 +77,32 @@ export function PromotionsFilters({
         size="small"
         value={status}
         onChange={(event) =>
-          onStatusChange(event.target.value as StatusFilter)
+          onStatusChange(
+            event.target.value as StatusFilter,
+          )
         }
-        sx={{ minWidth: { md: 180 } }}
+        slotProps={{
+          select: {
+            "aria-label":
+              "Filtrar produtos por classificação",
+          },
+        }}
+        sx={{
+          minWidth: { md: 180 },
+        }}
       >
-        <MenuItem value="all">Todos os status</MenuItem>
-        <MenuItem value="healthy">Saudável</MenuItem>
-        <MenuItem value="warning">Atenção</MenuItem>
-        <MenuItem value="loss">Prejuízo</MenuItem>
+        <MenuItem value="all">
+          Todos os status
+        </MenuItem>
+        <MenuItem value="healthy">
+          Saudável
+        </MenuItem>
+        <MenuItem value="warning">
+          Atenção
+        </MenuItem>
+        <MenuItem value="loss">
+          Prejuízo
+        </MenuItem>
       </TextField>
 
       <Button
@@ -77,6 +111,10 @@ export function PromotionsFilters({
         startIcon={<FilterAltOffIcon />}
         onClick={onClear}
         disabled={!hasActiveFilters}
+        sx={{
+          minHeight: 40,
+          whiteSpace: "nowrap",
+        }}
       >
         Limpar filtros
       </Button>
