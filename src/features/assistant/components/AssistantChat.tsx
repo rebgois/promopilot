@@ -8,13 +8,26 @@ import { processAssistantMessage } from "../domain/processAssistantMessage";
 const analysis = analyzePromotions(products);
 
 const flow: Flow = {
-  start: {
-    message:
-      "Olá! Sou o assistente comercial do PromoPilot. " +
-      "Posso analisar margens, identificar produtos em prejuízo " +
-      "e apresentar um resumo das promoções.",
-    path: "conversation",
+
+start: {
+  message:
+    "Olá! Sou o assistente comercial do PromoPilot. " +
+    "Escolha uma sugestão ou digite sua pergunta.",
+
+  options: {
+    items: [
+      "Me dê um resumo",
+      "Quais produtos estão em prejuízo?",
+      "Quais produtos têm margem baixa?",
+      "Quais produtos são saudáveis?",
+    ],
+    reusable: false,
+    sendOutput: true,
   },
+
+  path: "conversation",
+},
+
 
   conversation: {
     message: (params) => {
@@ -25,6 +38,7 @@ const flow: Flow = {
 
       return response.message;
     },
+
     path: "conversation",
   },
 };
