@@ -1,6 +1,7 @@
 
 import {
   Box,
+  Button,
   Paper,
   Stack,
   Table,
@@ -12,14 +13,20 @@ import {
   Typography,
 } from "@mui/material";
 
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
+import SearchOffOutlinedIcon from "@mui/icons-material/SearchOffOutlined";
+
 import type { AnalyzedPromotion } from "../domain/promotion.types";
+
 import {
   formatCurrency,
   formatPercentage,
 } from "../utils/formatters";
 
-import { PromotionsFilters } from "./PromotionsFIlters";
-import type { StatusFilter } from "./PromotionsFIlters";
+import {
+  PromotionsFilters,
+  type StatusFilter,
+} from "./PromotionsFilters";
 
 import { PromotionStatusChip } from "./PromotionStatusChip";
 
@@ -40,112 +47,264 @@ export function PromotionsTable({
   onStatusChange,
   onClearFilters,
 }: PromotionsTableProps) {
+  const hasActiveFilters =
+    search.trim() !== "" || status !== "all";
+
+  const productsCount =
+    products.length === 1
+      ? "1 produto encontrado."
+      : `${products.length} produtos encontrados.`;
+
   return (
-    <Paper variant="outlined">
+    <Paper
+  variant="outlined"
+  sx={{
+    overflow: "hidden",
+    borderRadius: "22px",
+    borderColor: "#EAE7F3",
+    boxShadow: "0 8px 32px rgba(45, 30, 90, 0.06)",
+  }}
+>
+      <Box sx={{ p: { xs: 2, sm: 3 } }}>
+        <Stack spacing={3}>
+          <Box>
+            <Typography
+              variant="h6"
+              component="h2"
+              id="promotions-table-title"
+            >
+              Produtos analisados
+            </Typography>
 
-<Box sx={{ p: 3 }}>
-  <Stack spacing={3}>
-    <Box>
-      <Typography variant="h6">
-        Produtos analisados
-      </Typography>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {productsCount}
+            </Typography>
+          </Box>
 
-      <Typography variant="body2" color="text.secondary">
-        {products.length} produto(s) encontrado(s).
-      </Typography>
-    </Box>
+          <PromotionsFilters
+            search={search}
+            status={status}
+            onSearchChange={onSearchChange}
+            onStatusChange={onStatusChange}
+            onClear={onClearFilters}
+          />
+        </Stack>
+      </Box>
 
-    <PromotionsFilters
-      search={search}
-      status={status}
-      onSearchChange={onSearchChange}
-      onStatusChange={onStatusChange}
-      onClear={onClearFilters}
-    />
-  </Stack>
-</Box>
+      {products.length === 0 ? (
+        <Box
+          role="status"
+          sx={{
+            px: 3,
+            py: 7,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            gap: 2,
+            borderTop: 1,
+            borderColor: "divider",
+          }}
+        >
+          <SearchOffOutlinedIcon
+            sx={{
+              fontSize: 48,
+              color: "text.disabled",
+            }}
+          />
 
+          <Box>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600 }}
+              gutterBottom
+            >
+              Nenhum produto encontrado
+            </Typography>
 
-      <TableContainer>
-        <Table sx={{ minWidth: 900 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Produto</TableCell>
-              <TableCell align="right">Custo</TableCell>
-              <TableCell align="right">Preço atual</TableCell>
-              <TableCell align="right">Preço promo.</TableCell>
-              <TableCell align="right">Desconto</TableCell>
-              <TableCell align="right">Margem</TableCell>
-              <TableCell align="right">Lucro un.</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+            >
+              {hasActiveFilters
+                ? "Nenhum produto corresponde aos filtros selecionados. Tente ajustar sua busca ou limpar os filtros."
+                : "Não há produtos disponíveis para exibição."}
+            </Typography>
+          </Box>
 
-          <TableBody>
-            {products.map((product) => (
-              <TableRow hover key={product.sku}>
-                <TableCell>
-                  <Typography sx={{ fontWeight: 600 }}>
-                    {product.nome}
-                  </Typography>
+          {hasActiveFilters && (
+            <Button
+              variant="outlined"
+              startIcon={<FilterAltOffIcon />}
+              onClick={onClearFilters}
+            >
+              Limpar filtros
+            </Button>
+          )}
+        </Box>
+      ) : (
+        <>
+          <TableContainer
+            sx={{
+              overflowX: "auto",
+              borderTop: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Table
+              aria-labelledby="promotions-table-title"
+              size="small"
+              sx={{
+                minWidth: 900,
+                "& .MuiTableCell-root": {
+                  py: 2,
+                },
+                "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even)": {
+                  backgroundColor: "#FAF8FF",
+                },
+                "& .MuiTableBody-root .MuiTableRow-root:hover": {
+                  backgroundColor: "#F3EFFF",
+                },
+              }}
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell scope="col">
+                    Produto
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Custo
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Preço atual
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Preço promo.
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Desconto
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Margem
+                  </TableCell>
+                  <TableCell scope="col" align="right">
+                    Lucro un.
+                  </TableCell>
+                  <TableCell scope="col">
+                    Status
+                  </TableCell>
+                </TableRow>
+              </TableHead>
 
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
+              <TableBody>
+                {products.map((product) => (
+                  <TableRow
+                    hover
+                    key={product.sku}
+                    sx={{
+                      "&:last-child td, &:last-child th": {
+                        borderBottom: 0,
+                      },
+                    }}
                   >
-                    SKU: {product.sku}
-                  </Typography>
-                </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{ fontWeight: 600 }}
+                      >
+                        {product.nome}
+                      </Typography>
 
-                <TableCell align="right">
-                  {formatCurrency(product.custo)}
-                </TableCell>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                      >
+                        SKU: {product.sku}
+                      </Typography>
+                    </TableCell>
 
-                <TableCell align="right">
-                  {formatCurrency(product.preco_atual)}
-                </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(product.custo)}
+                    </TableCell>
 
-                <TableCell align="right">
-                  {formatCurrency(product.preco_promocional)}
-                </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(product.preco_atual)}
+                    </TableCell>
 
-                <TableCell align="right">
-                  {formatPercentage(product.discountPercentage)}
-                </TableCell>
+                    <TableCell align="right">
+                      {formatCurrency(
+                        product.preco_promocional,
+                      )}
+                    </TableCell>
 
-                <TableCell align="right">
-                  <Typography
-                    sx={{ fontWeight: 600 }}
-                    color={
-                      product.marginPercentage < 0
-                        ? "error.main"
-                        : "text.primary"
-                    }
-                  >
-                    {formatPercentage(product.marginPercentage)}
-                  </Typography>
-                </TableCell>
+                    <TableCell align="right">
+                      {formatPercentage(
+                        product.discountPercentage,
+                      )}
+                    </TableCell>
 
-                <TableCell align="right">
-                  {formatCurrency(product.unitProfit)}
-                </TableCell>
+                    <TableCell align="right">
+                      <Typography
+                        variant="body2"
+                        sx={{ fontWeight: 600 }}
+                        color={
+                          product.marginPercentage < 0
+                            ? "error.main"
+                            : "text.primary"
+                        }
+                      >
+                        {formatPercentage(
+                          product.marginPercentage,
+                        )}
+                      </Typography>
+                    </TableCell>
 
-                <TableCell>
-                  <PromotionStatusChip status={product.status} />
-                </TableCell>
-              </TableRow>
-            ))}
+                    <TableCell align="right">
+                      {formatCurrency(
+                        product.unitProfit,
+                      )}
+                    </TableCell>
 
-            {products.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={8} align="center">
-                  Nenhum produto encontrado.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableCell>
+                      <PromotionStatusChip
+                        status={product.status}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+          <Box
+            sx={{
+              display: { xs: "block", md: "none" },
+              px: 2,
+              py: 1,
+              textAlign: "center",
+              borderTop: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Typography
+              variant="caption"
+              color="text.secondary"
+            >
+              Deslize a tabela horizontalmente para
+              visualizar todas as colunas.
+            </Typography>
+          </Box>
+        </>
+      )}
     </Paper>
   );
 }

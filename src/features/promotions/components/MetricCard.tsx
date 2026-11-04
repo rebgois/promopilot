@@ -2,58 +2,149 @@
 import type { ReactNode } from "react";
 
 import {
+  Box,
   Card,
   CardContent,
   Stack,
   Typography,
 } from "@mui/material";
 
+type MetricTone = "purple" | "blue" | "orange" | "red";
+
 interface MetricCardProps {
   title: string;
   value: string | number;
   icon?: ReactNode;
   description?: string;
+  tone?: MetricTone;
 }
+
+const toneStyles = {
+  purple: {
+    background: "#F4EFFF",
+    border: "#DDD0FF",
+    icon: "#5B21D8",
+    iconBackground: "#E9DFFF",
+  },
+  blue: {
+    background: "#EFF6FF",
+    border: "#CFE3FF",
+    icon: "#2563EB",
+    iconBackground: "#DBEAFE",
+  },
+  orange: {
+    background: "#FFF7ED",
+    border: "#FED7AA",
+    icon: "#EA580C",
+    iconBackground: "#FFEDD5",
+  },
+  red: {
+    background: "#FFF1F2",
+    border: "#FECDD3",
+    icon: "#DC2626",
+    iconBackground: "#FFE4E6",
+  },
+} satisfies Record<
+  MetricTone,
+  {
+    background: string;
+    border: string;
+    icon: string;
+    iconBackground: string;
+  }
+>;
 
 export function MetricCard({
   title,
   value,
   icon,
   description,
+  tone = "purple",
 }: MetricCardProps) {
+  const colors = toneStyles[tone];
+
   return (
-    <Card variant="outlined" sx={{ height: "100%" }}>
-      <CardContent>
+
+<Card
+  variant="outlined"
+  sx={{
+    height: "100%",
+    borderRadius: "20px !important",
+    backgroundColor: `${colors.background} !important`,
+    border: `1px solid ${colors.border}`,
+    boxShadow: "0 6px 20px rgba(45, 30, 90, 0.05)",
+    overflow: "hidden",
+    transition: "transform 180ms ease, box-shadow 180ms ease",
+    "&:hover": {
+      transform: "translateY(-3px)",
+      boxShadow: "0 12px 28px rgba(45, 30, 90, 0.09)",
+    },
+  }}
+>
+
+      <CardContent sx={{ p: 2.5, "&:last-child": { pb: 2.5 } }}>
         <Stack spacing={2}>
           <Stack
             direction="row"
             sx={{
-              justifyContent: "space-between",
               alignItems: "center",
+              justifyContent: "space-between",
             }}
+            spacing={1}
           >
             <Typography
               variant="body2"
-              color="text.secondary"
+              sx={{
+                color: "text.primary",
+                fontWeight: 700,
+              }}
             >
               {title}
             </Typography>
 
-            {icon}
+            {icon && (
+              <Box
+                sx={{
+                  width: 42,
+                  height: 42,
+                  flexShrink: 0,
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: colors.icon,
+                  backgroundColor: colors.iconBackground,
+                  "& svg": {
+                    fontSize: 24,
+                  },
+                }}
+              >
+                {icon}
+              </Box>
+            )}
           </Stack>
 
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
-            {value}
-          </Typography>
-
-          {description && (
+          <Box>
             <Typography
-              variant="caption"
-              color="text.secondary"
+              variant="h4"
+              sx={{
+                fontWeight: 800,
+                color: "text.primary",
+                mb: 0.5,
+              }}
             >
-              {description}
+              {value}
             </Typography>
-          )}
+
+            {description && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+              >
+                {description}
+              </Typography>
+            )}
+          </Box>
         </Stack>
       </CardContent>
     </Card>
