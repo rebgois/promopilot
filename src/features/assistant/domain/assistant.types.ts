@@ -8,3 +8,18 @@ export type AssistantIntent =
   | { type: "show_all" }
   | { type: "summary" }
   | { type: "unknown" };
+
+
+export type AssistantAction =
+  | {
+      type: "apply_filter";
+      status: PromotionStatus;
+    }
+  | {
+      type: "clear_filters";
+    };
+
+export interface AssistantResponse {
+  message: string;
+  action?: AssistantAction;
+}
