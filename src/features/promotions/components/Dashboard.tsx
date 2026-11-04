@@ -1,4 +1,6 @@
-import { lazy, Suspense } from "react";
+
+import { lazy, Suspense, useMemo } from "react";
+
 import {
   Box,
   Chip,
@@ -10,22 +12,23 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import { InvalidPromotions } from "./InvalidPromotions";
+
 import products from "../data/products.json";
 import { analyzePromotions } from "../domain/analyzePromotions";
 import { formatPercentage } from "../utils/formatters";
+import { usePromotionFiltersStore } from "../store/usePromotionFiltersStore";
 
 import { MetricCard } from "./MetricCard";
 import { PromotionsTable } from "./PromotionsTable";
-import { useMemo, useState } from "react";
-
-import type { StatusFilter } from "./PromotionsFIlters";
+import { InvalidPromotions } from "./InvalidPromotions";
 
 const analysis = analyzePromotions(products);
 
-const AssistantChat = lazy(
-  () => import("../../assistant/components/AssistantChat").then(
-    (module) => ({ default: module.AssistantChat }),
+const AssistantChat = lazy(() =>
+  import("../../assistant/components/AssistantChat").then(
+    (module) => ({
+      default: module.AssistantChat,
+    }),
   ),
 );
 
@@ -37,29 +40,50 @@ export function Dashboard() {
       ? "—"
       : formatPercentage(summary.averageMargin);
 
+  // Estado compartilhado com o assistente
+  const search = usePromotionFiltersStore(
+    (state) => state.search,
+  );
 
-const [search, setSearch] = useState("");
-const [status, setStatus] = useState<StatusFilter>("all");
+  const status = usePromotionFiltersStore(
+    (state) => state.statusFilter,
+  );
 
-const filteredProducts = useMemo(() => {
-  const normalizedSearch = search.trim().toLocaleLowerCase("pt-BR");
+  // Ações para atualizar os filtros
+  const setSearch = usePromotionFiltersStore(
+    (state) => state.setSearch,
+  );
 
-  return analysis.products.filter((product) => {
-    const matchesSearch =
-      product.nome.toLocaleLowerCase("pt-BR").includes(normalizedSearch) ||
-      product.sku.toLocaleLowerCase("pt-BR").includes(normalizedSearch);
+  const setStatus = usePromotionFiltersStore(
+    (state) => state.setStatusFilter,
+  );
 
-    const matchesStatus =
-      status === "all" || product.status === status;
+  const clearFilters = usePromotionFiltersStore(
+    (state) => state.clearFilters,
+  );
 
-    return matchesSearch && matchesStatus;
-  });
-}, [search, status]);
+  // Filtragem dos produtos analisados
+  const filteredProducts = useMemo(() => {
+    const normalizedSearch = search
+      .trim()
+      .toLocaleLowerCase("pt-BR");
 
-function clearFilters() {
-  setSearch("");
-  setStatus("all");
-}
+    return analysis.products.filter((product) => {
+      const matchesSearch =
+        product.nome
+          .toLocaleLowerCase("pt-BR")
+          .includes(normalizedSearch) ||
+        product.sku
+          .toLocaleLowerCase("pt-BR")
+          .includes(normalizedSearch);
+
+      const matchesStatus =
+        status === "all" ||
+        product.status === status;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [search, status]);
 
   return (
     <Stack spacing={4}>
@@ -111,45 +135,58 @@ function clearFilters() {
           title="Produtos válidos"
           value={summary.valid}
           description={`${summary.total} registros recebidos`}
-          icon={<Inventory2OutlinedIcon color="primary" />}
+          icon={
+            <Inventory2OutlinedIcon color="primary" />
+          }
         />
 
         <MetricCard
           title="Margem média"
           value={averageMargin}
           description="Média dos produtos válidos"
-          icon={<TrendingUpOutlinedIcon color="primary" />}
+          icon={
+            <TrendingUpOutlinedIcon color="primary" />
+          }
         />
 
         <MetricCard
           title="Produtos em atenção"
           value={summary.warning}
           description="Margem entre 0% e 15%"
-          icon={<WarningAmberOutlinedIcon color="warning" />}
+          icon={
+            <WarningAmberOutlinedIcon color="warning" />
+          }
         />
 
         <MetricCard
           title="Produtos em prejuízo"
           value={summary.loss}
           description="Margem negativa"
-          icon={<ErrorOutlineOutlinedIcon color="error" />}
+          icon={
+            <ErrorOutlineOutlinedIcon color="error" />
+          }
         />
       </Box>
 
       {/* Tabela de produtos analisados */}
-      
-<PromotionsTable
-  products={filteredProducts}
-  search={search}
-  status={status}
-  onSearchChange={setSearch}
-  onStatusChange={setStatus}
-  onClearFilters={clearFilters}
-/>
-<InvalidPromotions products={analysis.invalidProducts} />
-<Suspense fallback={null}>
-  <AssistantChat />
-</Suspense>
+      <PromotionsTable
+        products={filteredProducts}
+        search={search}
+        status={status}
+        onSearchChange={setSearch}
+        onStatusChange={setStatus}
+        onClearFilters={clearFilters}
+      />
+
+      {/* Registros inválidos */}
+      <InvalidPromotions
+        products={analysis.invalidProducts}
+      />
+
+      {/* Assistente comercial */}
+      <Suspense fallback={null}>
+        <AssistantChat />
+      </Suspense>
     </Stack>
   );
 }

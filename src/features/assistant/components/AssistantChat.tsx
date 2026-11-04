@@ -1,6 +1,6 @@
 
 import ChatBot, { type Flow } from "react-chatbotify";
-
+import { usePromotionFiltersStore } from "../../promotions/store/usePromotionFiltersStore";
 import products from "../../promotions/data/products.json";
 import { analyzePromotions } from "../../promotions/domain/analyzePromotions";
 import { processAssistantMessage } from "../domain/processAssistantMessage";
@@ -28,19 +28,10 @@ start: {
   path: "conversation",
 },
 
-
-  conversation: {
-    message: (params) => {
-      const response = processAssistantMessage(
-        params.userInput,
-        analysis,
-      );
-
-      return response.message;
-    },
-
-    path: "conversation",
-  },
+conversation: {
+  message: (params) => respondToMessage(params.userInput),
+  path: "conversation",
+},
 };
 
 export function AssistantChat() {
@@ -49,6 +40,9 @@ export function AssistantChat() {
       id="promopilot-assistant"
       flow={flow}
       settings={{
+        tooltip: {
+          text: "Fale comigo! 👋",
+        },
         general: {
           primaryColor: "#1976d2",
           secondaryColor: "#4338ca",
@@ -76,4 +70,28 @@ export function AssistantChat() {
       }}
     />
   );
+}
+
+function respondToMessage(userInput: string): string {
+  const response = processAssistantMessage(
+    userInput,
+    analysis,
+  );
+
+  if (response.action) {
+    const store = usePromotionFiltersStore.getState();
+
+    switch (response.action.type) {
+      case "apply_filter":
+        store.setSearch("");
+        store.setStatusFilter(response.action.status);
+        break;
+
+      case "clear_filters":
+        store.clearFilters();
+        break;
+    }
+  }
+
+  return response.message;
 }
