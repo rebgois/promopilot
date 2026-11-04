@@ -69,16 +69,11 @@ export function MetricCard({
   variant="outlined"
   sx={{
     height: "100%",
-    borderRadius: "20px !important",
-    backgroundColor: `${colors.background} !important`,
-    border: `1px solid ${colors.border}`,
-    boxShadow: "0 6px 20px rgba(45, 30, 90, 0.05)",
+    borderRadius: "20px",
     overflow: "hidden",
-    transition: "transform 180ms ease, box-shadow 180ms ease",
-    "&:hover": {
-      transform: "translateY(-3px)",
-      boxShadow: "0 12px 28px rgba(45, 30, 90, 0.09)",
-    },
+    border: "1px solid",
+    borderColor: "divider",
+    boxShadow: "0 4px 16px rgba(0, 0, 0, 0.04)",
   }}
 >
 
