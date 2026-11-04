@@ -1,0 +1,38 @@
+
+[
+  {
+    "sku": "001",
+    "nome": "Arroz 5 kg",
+    "custo": 20,
+    "preco_atual": 28,
+    "preco_promocional": 25
+  },
+  {
+    "sku": "002",
+    "nome": "Feijão 1 kg",
+    "custo": 7,
+    "preco_atual": 10,
+    "preco_promocional": 7.5
+  },
+  {
+    "sku": "003",
+    "nome": "Café 500 g",
+    "custo": 15,
+    "preco_atual": 22,
+    "preco_promocional": 14
+  },
+  {
+    "sku": "004",
+    "nome": "Leite 1 L",
+    "custo": 4,
+    "preco_atual": 5.5,
+    "preco_promocional": 0
+  },
+  {
+    "sku": "005",
+    "nome": "Óleo 900 ml",
+    "custo": 6,
+    "preco_atual": 8,
+    "preco_promocional": 9
+  }
+]
