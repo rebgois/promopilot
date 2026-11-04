@@ -57,14 +57,14 @@ export function PromotionsTable({
 
   return (
     <Paper
-  variant="outlined"
-  sx={{
-    overflow: "hidden",
-    borderRadius: "22px",
-    borderColor: "#EAE7F3",
-    boxShadow: "0 8px 32px rgba(45, 30, 90, 0.06)",
-  }}
->
+      variant="outlined"
+      sx={{
+        overflow: "hidden",
+        borderRadius: "22px",
+        borderColor: "divider",
+        boxShadow: "0 8px 32px rgba(32, 36, 58, 0.045)",
+      }}
+    >
       <Box sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack spacing={3}>
           <Box>
@@ -82,6 +82,7 @@ export function PromotionsTable({
               role="status"
               aria-live="polite"
               aria-atomic="true"
+              sx={{ mt: 0.5 }}
             >
               {productsCount}
             </Typography>
@@ -103,18 +104,18 @@ export function PromotionsTable({
           sx={{
             px: 3,
             py: 7,
+            borderTop: 1,
+            borderColor: "divider",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
             gap: 2,
-            borderTop: 1,
-            borderColor: "divider",
           }}
         >
           <SearchOffOutlinedIcon
             sx={{
-              fontSize: 48,
+              fontSize: 44,
               color: "text.disabled",
             }}
           />
@@ -122,7 +123,7 @@ export function PromotionsTable({
           <Box>
             <Typography
               variant="subtitle1"
-              sx={{ fontWeight: 600 }}
+              sx={{ fontWeight: 700 }}
               gutterBottom
             >
               Nenhum produto encontrado
@@ -150,13 +151,7 @@ export function PromotionsTable({
         </Box>
       ) : (
         <>
-          <TableContainer
-            sx={{
-              overflowX: "auto",
-              borderTop: 1,
-              borderColor: "divider",
-            }}
-          >
+          <TableContainer sx={{ overflowX: "auto" }}>
             <Table
               aria-labelledby="promotions-table-title"
               size="small"
@@ -166,18 +161,16 @@ export function PromotionsTable({
                   py: 2,
                 },
                 "& .MuiTableBody-root .MuiTableRow-root:nth-of-type(even)": {
-                  backgroundColor: "#FAF8FF",
+                  backgroundColor: "#FAFBFD",
                 },
                 "& .MuiTableBody-root .MuiTableRow-root:hover": {
-                  backgroundColor: "#F3EFFF",
+                  backgroundColor: "#F3F4F8",
                 },
               }}
             >
               <TableHead>
                 <TableRow>
-                  <TableCell scope="col">
-                    Produto
-                  </TableCell>
+                  <TableCell scope="col">Produto</TableCell>
                   <TableCell scope="col" align="right">
                     Custo
                   </TableCell>
@@ -196,30 +189,20 @@ export function PromotionsTable({
                   <TableCell scope="col" align="right">
                     Lucro un.
                   </TableCell>
-                  <TableCell scope="col">
-                    Status
-                  </TableCell>
+                  <TableCell scope="col">Status</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
                 {products.map((product) => (
-                  <TableRow
-                    hover
-                    key={product.sku}
-                    sx={{
-                      "&:last-child td, &:last-child th": {
-                        borderBottom: 0,
-                      },
-                    }}
-                  >
+                  <TableRow hover key={product.sku}>
                     <TableCell
                       component="th"
                       scope="row"
                     >
                       <Typography
                         variant="body2"
-                        sx={{ fontWeight: 600 }}
+                        sx={{ fontWeight: 700 }}
                       >
                         {product.nome}
                       </Typography>
@@ -255,7 +238,7 @@ export function PromotionsTable({
                     <TableCell align="right">
                       <Typography
                         variant="body2"
-                        sx={{ fontWeight: 600 }}
+                        sx={{ fontWeight: 700 }}
                         color={
                           product.marginPercentage < 0
                             ? "error.main"
@@ -269,9 +252,20 @@ export function PromotionsTable({
                     </TableCell>
 
                     <TableCell align="right">
-                      {formatCurrency(
-                        product.unitProfit,
-                      )}
+                      <Typography
+                        variant="body2"
+                        color={
+                          product.unitProfit < 0
+                            ? "error.main"
+                            : "text.primary"
+                        }
+                        sx={{
+                          fontWeight:
+                            product.unitProfit < 0 ? 700 : 400,
+                        }}
+                      >
+                        {formatCurrency(product.unitProfit)}
+                      </Typography>
                     </TableCell>
 
                     <TableCell>
@@ -289,7 +283,7 @@ export function PromotionsTable({
             sx={{
               display: { xs: "block", md: "none" },
               px: 2,
-              py: 1,
+              py: 1.5,
               textAlign: "center",
               borderTop: 1,
               borderColor: "divider",
@@ -299,8 +293,8 @@ export function PromotionsTable({
               variant="caption"
               color="text.secondary"
             >
-              Deslize a tabela horizontalmente para
-              visualizar todas as colunas.
+              Deslize horizontalmente para visualizar
+              todas as colunas.
             </Typography>
           </Box>
         </>

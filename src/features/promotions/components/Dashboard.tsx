@@ -12,10 +12,11 @@ import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import TrendingUpOutlinedIcon from "@mui/icons-material/TrendingUpOutlined";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import { usePromotionFiltersStore } from "../store/src/features/promotions/store/usePromotionFiltersStore";
+
 import products from "../data/products.json";
 import { analyzePromotions } from "../domain/analyzePromotions";
 import { formatPercentage } from "../utils/formatters";
+import { usePromotionFiltersStore } from "../store/src/features/promotions/store/usePromotionFiltersStore";
 
 import { MetricCard } from "./MetricCard";
 import { PromotionsTable } from "./PromotionsTable";
@@ -39,7 +40,6 @@ export function Dashboard() {
       ? "—"
       : formatPercentage(summary.averageMargin);
 
-  // Estado compartilhado com o assistente
   const search = usePromotionFiltersStore(
     (state) => state.search,
   );
@@ -48,7 +48,6 @@ export function Dashboard() {
     (state) => state.statusFilter,
   );
 
-  // Ações para atualizar os filtros
   const setSearch = usePromotionFiltersStore(
     (state) => state.setSearch,
   );
@@ -61,7 +60,6 @@ export function Dashboard() {
     (state) => state.clearFilters,
   );
 
-  // Filtragem dos produtos analisados
   const filteredProducts = useMemo(() => {
     const normalizedSearch = search
       .trim()
@@ -86,39 +84,49 @@ export function Dashboard() {
 
   return (
     <Stack spacing={4}>
-      {/* Cabeçalho do dashboard */}
-      <Box>
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        spacing={2}
+        sx={{
+          alignItems: {
+            xs: "flex-start",
+            sm: "center",
+          },
+          justifyContent: "space-between",
+          pt: { xs: 1, md: 2 },
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h4"
+            component="h1"
+            gutterBottom
+          >
+            Visão geral
+          </Typography>
+
+          <Typography
+            variant="body1"
+            color="text.secondary"
+          >
+            Acompanhe a rentabilidade das promoções
+            e identifique oportunidades de melhoria.
+          </Typography>
+        </Box>
+
+        <Chip
+          label="Dados demonstrativos"
+          size="small"
           sx={{
-            justifyContent: "space-between",
-            alignItems: {
-              xs: "flex-start",
-              sm: "center",
-            },
+            bgcolor: "#F0EDFF",
+            color: "#6045E8",
+            fontWeight: 600,
+            border: "1px solid #E3DCFF",
+            px: 0.5,
           }}
-        >
-          <Box>
-            <Typography variant="h4" gutterBottom>
-              Visão geral
-            </Typography>
+        />
+      </Stack>
 
-            <Typography color="text.secondary">
-              Acompanhe a rentabilidade das promoções
-              e identifique oportunidades de melhoria.
-            </Typography>
-          </Box>
-
-          <Chip
-            label="Dados demonstrativos"
-            variant="outlined"
-            color="primary"
-          />
-        </Stack>
-      </Box>
-
-      {/* Indicadores comerciais */}
       <Box
         sx={{
           display: "grid",
@@ -134,40 +142,35 @@ export function Dashboard() {
           title="Produtos válidos"
           value={summary.valid}
           description={`${summary.total} registros recebidos`}
-          icon={
-            <Inventory2OutlinedIcon color="primary" />
-          }
+          tone="purple"
+          icon={<Inventory2OutlinedIcon />}
         />
 
         <MetricCard
           title="Margem média"
           value={averageMargin}
           description="Média dos produtos válidos"
-          icon={
-            <TrendingUpOutlinedIcon color="primary" />
-          }
+          tone="blue"
+          icon={<TrendingUpOutlinedIcon />}
         />
 
         <MetricCard
           title="Produtos em atenção"
           value={summary.warning}
           description="Margem entre 0% e 15%"
-          icon={
-            <WarningAmberOutlinedIcon color="warning" />
-          }
+          tone="orange"
+          icon={<WarningAmberOutlinedIcon />}
         />
 
         <MetricCard
           title="Produtos em prejuízo"
           value={summary.loss}
           description="Margem negativa"
-          icon={
-            <ErrorOutlineOutlinedIcon color="error" />
-          }
+          tone="red"
+          icon={<ErrorOutlineOutlinedIcon />}
         />
       </Box>
 
-      {/* Tabela de produtos analisados */}
       <PromotionsTable
         products={filteredProducts}
         search={search}
@@ -177,12 +180,10 @@ export function Dashboard() {
         onClearFilters={clearFilters}
       />
 
-      {/* Registros inválidos */}
       <InvalidPromotions
         products={analysis.invalidProducts}
       />
 
-      {/* Assistente comercial */}
       <Suspense fallback={null}>
         <AssistantChat />
       </Suspense>
